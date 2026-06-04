@@ -81,12 +81,6 @@ body{
     color:#d8b46a;
 }
 
-.footer{
-    background:#111;
-    color:white;
-    text-align:center;
-    padding:30px;
-}
 .GHImagenhero{
     width: 28%;
     height: auto;
@@ -177,4 +171,343 @@ body{
 .offer-content a{
     color:#d8b46a;
     text-decoration:none;
+}
+
+.destinations-section{
+    width:100%;
+    background:#fff;
+    padding:95px 0 110px;
+}
+
+.destinations-header{
+    text-align:center;
+    margin-bottom:42px;
+}
+
+.destinations-header span{
+    display:block;
+    color:#d8b46a;
+    font-size:.9rem;
+    font-weight:500;
+    letter-spacing:5px;
+    margin-bottom:14px;
+    text-transform:uppercase;
+}
+
+.destinations-header h2{
+    color:#111;
+    font-size:2.4rem;
+    font-weight:300;
+    letter-spacing:2px;
+}
+
+.destinations-accordion{
+    width:100%;
+    height:70vh;
+    min-height:520px;
+    display:flex;
+    overflow:hidden;
+}
+
+.destination-panel{
+    position:relative;
+    flex:1;
+    min-width:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    background-size:cover;
+    background-position:center;
+    transition:flex .7s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.destination-panel:hover{
+    flex:4;
+}
+
+.destination-cancun{
+    background-image:url("../img/cancun FG.jpg");
+}
+
+.destination-los-cabos{
+    background-image:url("../img/los cabos FG.jpg");
+}
+
+.destination-riviera-maya{
+    background-image:url("../img/rivera maya FG.jpg");
+}
+
+.destination-overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.3);
+    transition:background .7s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.destination-panel:hover .destination-overlay{
+    background:rgba(0,0,0,.42);
+}
+
+.destination-content{
+    position:relative;
+    z-index:2;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    padding:35px;
+    text-align:center;
+}
+
+.destination-content h3{
+    color:white;
+    font-family:Georgia, 'Times New Roman', serif;
+    font-size:clamp(2rem, 4vw, 4.8rem);
+    font-weight:300;
+    letter-spacing:3px;
+    line-height:1.1;
+    text-shadow:0 8px 25px rgba(0,0,0,.35);
+}
+
+.destination-actions{
+    display:flex;
+    gap:16px;
+    margin-top:26px;
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity .45s ease .18s, transform .45s ease .18s;
+    pointer-events:none;
+}
+
+.destination-panel:hover .destination-actions{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+}
+
+.destination-actions a{
+    min-width:128px;
+    padding:13px 22px;
+    color:white;
+    border:1px solid rgba(255,255,255,.78);
+    text-decoration:none;
+    font-size:.78rem;
+    font-weight:500;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    transition:background .3s ease, color .3s ease, border-color .3s ease;
+}
+
+.destination-actions a:hover{
+    background:white;
+    color:#111;
+    border-color:white;
+}
+
+@media (max-width:768px){
+    .destinations-section{
+        padding:75px 0 90px;
+    }
+
+    .destinations-header{
+        padding:0 24px;
+    }
+
+    .destinations-header h2{
+        font-size:1.9rem;
+    }
+
+    .destinations-accordion{
+        height:auto;
+        min-height:0;
+        flex-direction:column;
+    }
+
+    .destination-panel{
+        min-height:240px;
+    }
+
+    .destination-panel:hover{
+        flex:1;
+    }
+
+    .destination-actions{
+        opacity:1;
+        transform:none;
+        pointer-events:auto;
+    }
+
+    .destination-actions a{
+        min-width:112px;
+        padding:12px 16px;
+    }
+}
+
+/* Footer principal: fondo profundo y columnas flexibles para una lectura elegante. */
+.footer{
+    background:#1a1a1a;
+    color:#c9c9c9;
+}
+
+.footer-main{
+    width:min(1180px, calc(100% - 48px));
+    margin:0 auto;
+    padding:72px 0 58px;
+    display:flex;
+    justify-content:space-between;
+    gap:56px;
+}
+
+.footer-column{
+    flex:1;
+}
+
+.footer-brand{
+    flex:1.35;
+}
+
+.footer-brand h2{
+    color:#fff;
+    font-family:Georgia, 'Times New Roman', serif;
+    font-size:2.35rem;
+    font-weight:300;
+    letter-spacing:2px;
+    margin-bottom:18px;
+}
+
+.footer-brand p{
+    max-width:360px;
+    color:#b7b7b7;
+    line-height:1.7;
+}
+
+.footer h3{
+    color:#fff;
+    font-size:.78rem;
+    font-weight:500;
+    letter-spacing:3px;
+    margin-bottom:22px;
+    text-transform:uppercase;
+}
+
+/* Navegación limpia sin viñetas, pensada para escanear rápido. */
+.footer-nav ul{
+    list-style:none;
+}
+
+.footer-nav li{
+    margin-bottom:13px;
+}
+
+.footer a{
+    color:#c9c9c9;
+    text-decoration:none;
+    transition:color .25s ease;
+}
+
+.footer a:hover{
+    color:#fff;
+}
+
+.footer-contact address{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:28px;
+    font-style:normal;
+}
+
+/* Newsletter minimalista con input y botón en una sola línea. */
+.newsletter-form label{
+    display:block;
+    color:#f2f2f2;
+    font-size:.82rem;
+    letter-spacing:1px;
+    margin-bottom:12px;
+}
+
+.newsletter-control{
+    display:flex;
+    max-width:390px;
+    border-bottom:1px solid rgba(255,255,255,.35);
+}
+
+.newsletter-control input{
+    flex:1;
+    min-width:0;
+    background:transparent;
+    border:0;
+    color:#fff;
+    padding:13px 0;
+    outline:none;
+}
+
+.newsletter-control input::placeholder{
+    color:#777;
+}
+
+.newsletter-control button{
+    background:transparent;
+    border:0;
+    color:#d8b46a;
+    padding:13px 0 13px 18px;
+    font-size:.78rem;
+    font-weight:600;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:color .25s ease;
+}
+
+.newsletter-control button:hover{
+    color:#fff;
+}
+
+/* Barra legal inferior con fondo un poco más cerrado que el bloque principal. */
+.footer-legal{
+    background:#121212;
+    padding:22px max(24px, calc((100% - 1180px) / 2));
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+    color:#8f8f8f;
+    font-size:.86rem;
+}
+
+.footer-legal p{
+    margin:0;
+}
+
+/* Easter egg: parece texto normal hasta que el staff pasa el cursor por encima. */
+.footer .employee-link{
+    color:inherit;
+    text-decoration:none;
+    cursor:default;
+}
+
+.footer .employee-link:hover{
+    color:#ffffff;
+    cursor:pointer;
+}
+
+@media (max-width:768px){
+    .footer-main{
+        width:min(100% - 32px, 520px);
+        padding:58px 0 46px;
+        flex-direction:column;
+        gap:36px;
+    }
+
+    .footer-brand h2{
+        font-size:2rem;
+    }
+
+    .footer-legal{
+        flex-direction:column;
+        align-items:flex-start;
+        padding:22px 16px;
+    }
 }
