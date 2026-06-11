@@ -1,7 +1,10 @@
 
         :root{
-            --gh-black:#111111;
-            --gh-ink:#1a1a1a;
+            --gh-black:#0b2f4f;
+            --gh-ink:#0b2f4f;
+            --gh-blue-deep:#061d33;
+            --gh-blue:#0b2f4f;
+            --gh-blue-light:#155b92;
             --gh-soft:#f7f7f7;
             --gh-line:#e7e1d6;
             --gh-muted:#6f6f6f;
@@ -48,18 +51,19 @@
             height:100vh;
             display:flex;
             flex-direction:column;
-            background:var(--gh-black);
+            background:linear-gradient(180deg, var(--gh-blue-deep) 0%, var(--gh-blue) 100%);
             color:var(--gh-white);
-            border-right:1px solid rgba(216,180,106,.24);
+            border-right:1px solid rgba(21,91,146,.35);
             z-index:20;
         }
 
         .brand-area{
-            min-height:116px;
-            padding:24px 24px 18px;
-            display:flex;
+            min-height:96px;
+            padding:20px 16px;
+            display:grid;
+            grid-template-columns:45px minmax(0, 1fr) 42px;
             align-items:center;
-            gap:15px;
+            gap:12px;
             border-bottom:1px solid rgba(255,255,255,.09);
         }
 
@@ -67,15 +71,17 @@
             width:45px;
             height:45px;
             flex:0 0 45px;
-            border:1px solid rgba(216,180,106,.55);
+            border:0;
+            border-radius:8px;
             display:grid;
             place-items:center;
-            background:rgba(255,255,255,.04);
+            /* background:rgba(255,255,255,.08); */
+            transition:opacity .18s ease, width .18s ease, flex-basis .18s ease;
         }
 
         .brand-mark img{
-            width:34px;
-            height:34px;
+            width:54px;
+            height:54px;
             object-fit:contain;
         }
 
@@ -85,14 +91,16 @@
         }
 
         .brand-title{
-            margin:0;
+            margin-top:30px;
+            margin-left: 5px;
             color:var(--gh-white);
             font-family:Georgia, 'Times New Roman', serif;
-            font-size:1.05rem;
+            font-size:1.0rem;
             font-weight:300;
-            letter-spacing:3px;
-            text-transform:uppercase;
+            letter-spacing:1.8px;
             white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
         }
 
         .brand-subtitle{
@@ -104,11 +112,13 @@
         }
 
         .sidebar-toggle{
+            margin-top:10px;
             width:42px;
             height:42px;
             margin-left:auto;
-            border:1px solid rgba(255,255,255,.16);
-            background:transparent;
+            border:1px solid rgba(255,255,255,.22);
+            border-radius:8px;
+            background:rgba(255,255,255,.06);
             color:var(--gh-white);
             display:grid;
             place-items:center;
@@ -117,8 +127,8 @@
         }
 
         .sidebar-toggle:hover{
-            border-color:var(--gh-gold);
-            background:rgba(216,180,106,.12);
+            border-color:rgba(255,255,255,.46);
+            background:rgba(21,91,146,.55);
         }
 
         .icon{
@@ -217,6 +227,7 @@
             font-size:.76rem;
         }
 
+        body.sidebar-collapsed .brand-mark,
         body.sidebar-collapsed .brand-copy,
         body.sidebar-collapsed .nav-text,
         body.sidebar-collapsed .staff-copy{
@@ -226,18 +237,20 @@
         }
 
         body.sidebar-collapsed .brand-area{
-            padding-inline:21px;
+            min-height:76px;
+            padding:17px 20px;
+            grid-template-columns:0 0 42px;
             justify-content:center;
+            gap:0;
         }
 
         body.sidebar-collapsed .sidebar-toggle{
-            position:absolute;
-            top:73px;
-            left:50%;
-            transform:translateX(-50%);
-            width:38px;
-            height:38px;
-            background:var(--gh-black);
+            position:static;
+            transform:none;
+            width:42px;
+            height:42px;
+            margin-left:0;
+            background:rgba(255,255,255,.08);
         }
 
         body.sidebar-collapsed .nav-link,
@@ -249,6 +262,29 @@
         .main-content{
             min-width:0;
             padding:32px clamp(20px, 4vw, 56px) 54px;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+        }
+
+        .destinos-lista{
+            width:min(100%, 680px);
+            text-align:center;
+        }
+
+        .destinos-lista h2{
+            margin:0 0 18px;
+            color:var(--gh-black);
+            font-family:Georgia, 'Times New Roman', serif;
+            font-size:clamp(1.8rem, 3vw, 2.5rem);
+            font-weight:300;
+        }
+
+        .destinos-lista p{
+            margin:8px 0;
+            color:var(--gh-muted);
+            font-size:1rem;
         }
 
         .mobile-topbar{
@@ -374,9 +410,9 @@
             border-radius:50%;
             display:grid;
             place-items:center;
-            background:
+            /* background:
                 linear-gradient(rgba(17,17,17,.18), rgba(17,17,17,.18)),
-                url("img/logGH.jpg") center/cover;
+                url("img/logo png.png") center/cover; */
             border:4px solid var(--gh-white);
             outline:1px solid var(--gh-line);
             color:var(--gh-white);
@@ -653,6 +689,7 @@
                 pointer-events:auto;
             }
 
+            body.sidebar-collapsed .brand-mark,
             body.sidebar-collapsed .brand-copy,
             body.sidebar-collapsed .nav-text,
             body.sidebar-collapsed .staff-copy{
@@ -662,8 +699,11 @@
             }
 
             body.sidebar-collapsed .brand-area{
+                min-height:96px;
                 padding:24px 24px 18px;
-                justify-content:flex-start;
+                grid-template-columns:45px minmax(0, 1fr) 42px;
+                gap:12px;
+                justify-content:stretch;
             }
 
             body.sidebar-collapsed .sidebar-toggle{

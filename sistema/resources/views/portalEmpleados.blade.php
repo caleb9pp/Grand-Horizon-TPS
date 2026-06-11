@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Empleados | Grand Horizon</title>
-    <link rel="stylesheet" href="css/style_portal_empleados.css">
+    <link rel="stylesheet" href="{{ asset('css/style_portal_empleados.css') }}">
 </head>
 <body>
     <main class="empleados-login">
         <div class="marca-agua" aria-hidden="true">
-            <img src="img/logo png.png" alt="">
+            <img src="{{ asset('img/logo png.png') }}" alt="">
         </div>
 
         <section class="login-card" aria-labelledby="login-title">
             <header class="login-brand">
-                <img src="img/logo png.png" alt="Grand Horizon" class="login-logo">
+                <img src="{{ asset('img/logo png.png') }}" alt="Grand Horizon" class="login-logo">
                 <h1 id="login-title">Grand Horizon</h1>
                 <p>Portal de Empleados</p>
             </header>
 
-            <form class="login-form" action="/PerfilUsuario" method="get">
+            <form class="login-form" action="{{ url('/PerfilUsuario') }}" method="get">
                 <div class="form-group">
                     <label for="empleado-id">ID de Empleado</label>
                     <input type="text" id="empleado-id" name="empleado-id" placeholder="EMP00126" autocomplete="username">

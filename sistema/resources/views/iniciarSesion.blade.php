@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesion | Grand Horizon</title>
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style_iniciarsesion.css">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style_iniciarsesion.css') }}">
 </head>
 <body>
     <main class="login-section">
@@ -13,7 +13,7 @@
             <div class="login-overlay"></div>
 
             <div class="GHImagenhero login-logo-imagen">
-                <img src="img/logo png.png" alt="Grand Horizon">
+                <img src="{{ asset('img/logo png.png') }}" alt="Grand Horizon">
             </div>
 
             <div class="login-imagen-contenido">
@@ -29,7 +29,7 @@
 
         <section class="login-form-panel">
             <div class="login-top-action">
-                <a href="Index.html" class="btn btn-login-outline">Inicio</a>
+                <a href="{{ url('/') }}" class="btn btn-login-outline">Inicio</a>
             </div>
 
             <div class="login-card">
@@ -74,6 +74,6 @@
         </section>
     </main>
 
-    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>
