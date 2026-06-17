@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DestinoController;
 
 Route::get('/', function () {
     return view('index');
@@ -11,19 +12,15 @@ Route::get('/iniciarSesion', function () {
 });
 
 Route::get('/portalEmpleados', function () {
- return view('portalEmpleados');
+    return view('portalEmpleados');
 });
 
 Route::get('/PerfilUsuario', function () {
-        $destinos = [
-        'Cancún',
-        'Los Cabos',
-        'Puerto Vallarta'
-    ];
-
-    return view('PerfilUsuario', compact('destinos'));
+    return view('PerfilUsuario');
 });
 
 Route::get('/prueba', function () {
     return view('prueba');
 });
+
+Route::resource('destinos', DestinoController::class);
