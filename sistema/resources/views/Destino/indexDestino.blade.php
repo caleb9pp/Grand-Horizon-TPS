@@ -9,11 +9,33 @@
             </a>
         </div>
 
-        <!-- @if (session('mensaje'))
+        <div class="destinos-search">
+            <div>
+                <h3 class="mb-0">Buscar</h3>
+                <p>Consulta destinos por nombre, descripcion o ubicacion.</p>
+            </div>
+
+            <form action="{{ route('destinos.index') }}" method="GET" class="destinos-search-form">
+                <input
+                    type="search"
+                    name="buscar"
+                    class="form-control"
+                    placeholder="Ej. Cancun, playa, Riviera Maya"
+                    value="{{ $buscar }}"
+                >
+                <button type="submit" class="btn btn-primary">Buscar</button>
+
+                @if ($buscar !== '')
+                    <a href="{{ route('destinos.index') }}" class="btn btn-secondary">Limpiar</a>
+                @endif
+            </form>
+        </div>
+
+         @if (session('mensaje'))
             <div class="alert alert-success">
                 {{ session('mensaje') }}
             </div>
-        @endif -->
+        @endif
 
         <div class="table-responsive">
             <table class="table table-bordered table-hover align-middle">
@@ -51,7 +73,13 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center">No hay destinos registrados.</td>
+                            <td colspan="5" class="text-center">
+                                @if ($buscar !== '')
+                                    No se encontraron destinos para "{{ $buscar }}".
+                                @else
+                                    No hay destinos registrados.
+                                @endif
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>

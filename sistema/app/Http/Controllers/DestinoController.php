@@ -10,11 +10,20 @@ class DestinoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $destinos = Destino::orderBy('id_destino', 'desc')->get();
+        $buscar = trim((string) $request->input('buscar'));
 
-        return view('Destino.indexDestino', compact('destinos'));
+        $destinos = Destino::query()
+            ->when($buscar !== '', function ($query) use ($buscar) {
+                $query->where('nom_des', 'like', "%{$buscar}%")
+                    ->orWhere('desc_des', 'like', "%{$buscar}%")
+                    ->orWhere('ubicacion', 'like', "%{$buscar}%");
+            })
+            ->orderBy('id_destino', 'desc')
+            ->get();
+
+        return view('Destino.indexDestino', compact('destinos', 'buscar'));
     }
 
     /**

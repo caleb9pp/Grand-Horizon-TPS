@@ -312,6 +312,51 @@
             box-shadow:0 18px 45px rgba(17,17,17,.05);
         }
 
+        .destinos-search{
+            display:grid;
+            grid-template-columns:minmax(180px, 260px) minmax(0, 1fr);
+            align-items:end;
+            gap:22px;
+            padding:24px 30px;
+            background:#fbfaf8;
+            border:1px solid var(--gh-line);
+            border-bottom:0;
+            box-shadow:0 18px 45px rgba(17,17,17,.04);
+        }
+
+        .destinos-search h3{
+            margin:0;
+            color:var(--gh-blue);
+            font-family:Georgia, 'Times New Roman', serif;
+            font-size:1.35rem;
+            font-weight:300;
+            letter-spacing:.8px;
+        }
+
+        .destinos-search p{
+            margin:7px 0 0;
+            color:var(--gh-muted);
+            font-size:.9rem;
+            line-height:1.5;
+        }
+
+        .destinos-search-form{
+            display:grid;
+            grid-template-columns:minmax(220px, 1fr) auto auto;
+            gap:10px;
+            align-items:end;
+        }
+
+        .destinos-search-form .form-control{
+            min-height:44px;
+            background:var(--gh-white);
+            border-color:#ded5c5;
+        }
+
+        .destinos-search-form .form-control::placeholder{
+            color:#9a9285;
+        }
+
         .main-content .table-responsive{
             overflow:auto;
         }
@@ -969,6 +1014,15 @@
                 padding:24px;
             }
 
+            .destinos-search{
+                grid-template-columns:1fr;
+                padding:24px;
+            }
+
+            .destinos-search-form{
+                grid-template-columns:1fr;
+            }
+
             .main-content > .container-fluid > form .mb-3:nth-child(2){
                 grid-row:auto;
             }
@@ -1023,6 +1077,10 @@
 
             .main-content > .container-fluid > .d-flex:first-child,
             .main-content > .container-fluid > form{
+                padding:20px;
+            }
+
+            .destinos-search{
                 padding:20px;
             }
 
