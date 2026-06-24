@@ -10,7 +10,7 @@ class DestinoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function listarDestinos()
     {
         $destinos = Destino::orderBy('id_destino', 'desc')->get();
 
@@ -20,7 +20,7 @@ class DestinoController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function createDestino()
     {
         return view('Destino.FormDestino');
     }
@@ -28,7 +28,7 @@ class DestinoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function storeDestino(Request $request)
     {
         $datos = $request->validate([
             'nom_des' => 'required|string|max:100',
@@ -46,7 +46,7 @@ class DestinoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Destino $destino)
+    public function showDestino(Destino $destino)
     {
         //
     }
@@ -54,7 +54,7 @@ class DestinoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Destino $destino)
+    public function editDestino(Destino $destino)
     {
         return view('Destino.EditDestino', compact('destino'));
     }
@@ -62,7 +62,7 @@ class DestinoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Destino $destino)
+    public function updateDestino(Request $request, Destino $destino)
     {
         $datos = $request->validate([
             'nom_des' => 'required|string|max:100',
@@ -80,7 +80,7 @@ class DestinoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Destino $destino)
+    public function destroyDestino(Destino $destino)
     {
         $destino->delete();
 
