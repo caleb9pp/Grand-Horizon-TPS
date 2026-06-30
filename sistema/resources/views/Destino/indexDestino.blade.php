@@ -22,7 +22,7 @@
                     class="form-control"
                     placeholder="Ej. Cancun, playa, Riviera Maya"
                     value="{{ $buscar }}"
-                >
+                >   
                 <button type="submit" class="btn btn-primary">Buscar</button>
 
                 @if ($buscar !== '')
