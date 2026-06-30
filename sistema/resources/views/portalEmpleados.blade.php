@@ -21,14 +21,14 @@
 
             <form class="login-form" action="{{ url('/PerfilUsuario') }}" method="get">
                 <div class="form-group">
-                    <label for="empleado-id">ID de Empleado</label>
-                    <input type="text" id="empleado-id" name="empleado-id" placeholder="EMP00126" autocomplete="username">
+                    <label for="empleado-id">Usuario</label>
+                    <input type="text" id="empleado-id" name="empleado-id" placeholder="EMPOO126" autocomplete="username" required>
                 </div>
 
                 <div class="form-group">
                     <label for="empleado-password">Contraseña</label>
                     <div class="password-field">
-                        <input type="password" id="empleado-password" name="empleado-password" placeholder="**********" autocomplete="current-password">
+                        <input type="password" id="empleado-password" name="empleado-password" placeholder="**********" autocomplete="current-password" required>
                         <button type="button" class="toggle-password" aria-label="Mostrar contraseña">
                             <span class="eye-icon" aria-hidden="true"></span>
                         </button>
@@ -37,7 +37,7 @@
 
                 <div class="form-group">
                     <label for="departamento">Departamento</label>
-                    <select id="departamento" name="departamento">
+                    <select id="departamento" name="departamento" required>
                         <option value="">Seleccione un departamento</option>
                         <option value="recepcion">Recepción</option>
                         <option value="reservas">Gerente</option>
@@ -58,7 +58,7 @@
                     <span class="support-icon" aria-hidden="true"></span>
                     Soporte Tecnico
                 </a>
-                <p>¿Necesitas ayuda? Contactanos</p>
+                <p>¿No tienes una cuenta? <a href="#" class="employee-link">Contactanos</a> </p>
             </footer>
         </section>
     </main>

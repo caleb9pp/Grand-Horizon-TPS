@@ -344,6 +344,18 @@ body {
     font-size: .92rem;
 }
 
+.employee-link  {
+    color:var(--texto-gris);
+    text-decoration:none;
+    cursor:default;
+}
+
+.employee-link:hover{
+    color:#1d6ca7;
+    cursor:pointer;
+}
+
+
 @media (max-width: 900px) {
     .empleados-login {
         min-height: 100vh;

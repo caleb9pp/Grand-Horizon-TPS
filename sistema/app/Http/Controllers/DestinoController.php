@@ -20,11 +20,12 @@ class DestinoController extends Controller
                     ->orWhere('desc_des', 'like', "%{$buscar}%")
                     ->orWhere('ubicacion', 'like', "%{$buscar}%");
             })
-            ->orderBy('id_destino', 'desc')
-            ->get();
+                ->orderBy('id_destino', 'desc')
+                ->get();
 
-        return view('Destino.indexDestino', compact('destinos', 'buscar'));
+            return view('Destino.indexDestino', compact('destinos', 'buscar'));
     }
+    
 
     /**
      * Show the form for creating a new resource.

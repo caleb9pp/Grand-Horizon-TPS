@@ -481,7 +481,7 @@ body{
     margin:0;
 }
 
-/* Easter egg: parece texto normal hasta que el staff pasa el cursor por encima. */
+
 .footer .employee-link{
     color:inherit;
     text-decoration:none;
