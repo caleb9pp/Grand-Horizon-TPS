@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DestinoController;
+use App\Http\Controllers\userController;
 
 Route::get('/', function () {
     return view('index');
@@ -13,11 +14,13 @@ Route::get('/iniciarSesion', function () {
 
 Route::get('/portalEmpleados', function () {
     return view('portalEmpleados');
-});
+})->name('login');
+
+Route::post('/portalEmpleados/login', [userController::class, 'login'])->name('portalEmpleados.login');
 
 Route::get('/PerfilUsuario', function () {
     return view('PerfilUsuario');
-});
+})->middleware('auth');
 
 Route::get('/prueba', function () {
     return view('prueba');
