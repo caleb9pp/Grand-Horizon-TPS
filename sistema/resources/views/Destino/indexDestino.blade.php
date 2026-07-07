@@ -15,7 +15,7 @@
                 <p>Consulta destinos por nombre, descripcion o ubicacion.</p>
             </div>
 
-            <form action="{{ route('destinos.index') }}" method="GET" class="destinos-search-form">
+            <form action="{{ route('destinos.search') }}" method="GET" class="destinos-search-form">
                 <input
                     type="search"
                     name="buscar"

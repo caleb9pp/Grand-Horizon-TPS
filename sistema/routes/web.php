@@ -27,6 +27,7 @@ Route::get('/prueba', function () {
 });
 
 Route::get('/destinos', [DestinoController::class, 'listarDestinos'])->name('destinos.index');
+Route::get('/destinos/search', [DestinoController::class, 'searchDestinos'])->name('destinos.search');
 Route::get('/destinos/create', [DestinoController::class, 'createDestino'])->name('destinos.create');
 Route::post('/destinos', [DestinoController::class, 'storeDestino'])->name('destinos.store');
 Route::get('/destinos/{destino}', [DestinoController::class, 'showDestino'])->name('destinos.show');
