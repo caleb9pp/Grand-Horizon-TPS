@@ -32,7 +32,7 @@
         </div>
 
          @if (session('mensaje'))
-            <div class="alert alert-success">
+            <div id="mensaje" class="alert alert-success">
                 {{ session('mensaje') }}
             </div>
         @endif
@@ -45,6 +45,7 @@
                         <th>Descripcion</th>
                         <th>Ubicacion</th>
                         <th>Imagen</th>
+                        <th>Atracciones</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -67,12 +68,26 @@
                                 @endif
                             </td>
                             <td>
+                                @forelse ($destino->atracciones as $atraccion)
+                                    <div class="mb-2">
+                                        <ul>
+                                            <li>{{ $atraccion->nom_atr }}</li>
+                                        </ul>
+                                       
+                                    </div>
+                                @empty
+                                    Sin atracciones
+                                @endforelse
+                            </td>
+                            <td>
                                 <div class="d-flex gap-2">
                                     <a href="{{ route('destinos.edit', $destino) }}" class="btn btn-warning btn-sm">
                                         Editar
                                     </a>
 
-                                    <form action="{{ route('destinos.destroy', $destino) }}" method="POST">
+                                    <form action="{{ route('destinos.destroy', $destino) }}" 
+                                    method="POST"
+                                    onsubmit="return confirm('¿Estás seguro de eliminar este destino?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm">
@@ -84,7 +99,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center">
+                            <td colspan="6" class="text-center">
                                 @if ($buscar !== '')
                                     No se encontraron destinos para "{{ $buscar }}".
                                 @else
@@ -96,5 +111,6 @@
                 </tbody>
             </table>
         </div>
+        <script src="{{ asset('js/alerta.js') }}"></script>
     </section>
 @endsection

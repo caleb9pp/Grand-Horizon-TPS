@@ -14,7 +14,9 @@ class DestinoController extends Controller
     public function listarDestinos()
     {
         $buscar = '';
-        $destinos = Destino::orderBy('id_destino', 'desc')->get();
+        $destinos = Destino::with('atracciones')
+            ->orderBy('id_destino', 'desc')
+            ->get();
 
         return view('Destino.indexDestino', compact('destinos', 'buscar'));
     }
@@ -27,7 +29,7 @@ class DestinoController extends Controller
             return redirect()->route('destinos.index');
         }
 
-        $destinos = Destino::query()
+        $destinos = Destino::with('atracciones')
             ->where(function ($query) use ($buscar) {
                 $query->where('nom_des', 'like', "%{$buscar}%")
                     ->orWhere('desc_des', 'like', "%{$buscar}%")

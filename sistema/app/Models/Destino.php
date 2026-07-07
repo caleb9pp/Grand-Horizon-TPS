@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Destino extends Model
 {
@@ -14,4 +15,9 @@ class Destino extends Model
         'ubicacion',
         'imagen_des',
     ];
+
+    public function atracciones(): HasMany
+    {
+        return $this->hasMany(Atraccion::class, 'id_destino', 'id_destino');
+    }
 }
