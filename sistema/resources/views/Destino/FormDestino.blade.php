@@ -9,7 +9,7 @@
             </a>
         </div>
 
-        <form action="{{ route('destinos.store') }}" method="POST">
+        <form action="{{ route('destinos.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             @include('Destino.Partials.camposDestino')

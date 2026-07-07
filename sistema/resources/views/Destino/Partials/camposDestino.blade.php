@@ -49,14 +49,20 @@
 <div class="mb-3">
     <label for="imagen_des" class="form-label">Imagen del destino</label>
     <input
-        type="text"
+        type="file"
         name="imagen_des"
         id="imagen_des"
         class="form-control @error('imagen_des') is-invalid @enderror"
-        value="{{ old('imagen_des', $destino->imagen_des ?? '') }}"
-        maxlength="255"
-        required
+        accept="image/*"
+        @if (!isset($destino)) required @endif
     >
+    @isset($destino)
+        @if ($destino->imagen_des)
+            <div class="form-text">
+                Imagen actual: {{ $destino->imagen_des }}
+            </div>
+        @endif
+    @endisset
     @error('imagen_des')
         <div class="invalid-feedback">{{ $message }}</div>
     @enderror

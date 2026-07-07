@@ -9,7 +9,7 @@
             </a>
         </div>
 
-        <form action="{{ route('destinos.update', $destino) }}" method="POST">
+        <form action="{{ route('destinos.update', $destino) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Destino;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DestinoController extends Controller
 {
@@ -44,8 +45,10 @@ class DestinoController extends Controller
             'nom_des' => 'required|string|max:100',
             'desc_des' => 'required|string',
             'ubicacion' => 'required|string|max:200',
-            'imagen_des' => 'required|string|max:255',
+            'imagen_des' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
+
+        $datos['imagen_des'] = $request->file('imagen_des')->store('destinos', 'public');
 
         Destino::create($datos);
 
@@ -78,8 +81,18 @@ class DestinoController extends Controller
             'nom_des' => 'required|string|max:100',
             'desc_des' => 'required|string',
             'ubicacion' => 'required|string|max:200',
-            'imagen_des' => 'required|string|max:255',
+            'imagen_des' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
+
+        if ($request->hasFile('imagen_des')) {
+            if ($destino->imagen_des) {
+                Storage::disk('public')->delete($destino->imagen_des);
+            }
+
+            $datos['imagen_des'] = $request->file('imagen_des')->store('destinos', 'public');
+        } else {
+            unset($datos['imagen_des']);
+        }
 
         $destino->update($datos);
 
@@ -92,6 +105,10 @@ class DestinoController extends Controller
      */
     public function destroyDestino(Destino $destino)
     {
+        if ($destino->imagen_des) {
+            Storage::disk('public')->delete($destino->imagen_des);
+        }
+
         $destino->delete();
 
         return redirect()->route('destinos.index')

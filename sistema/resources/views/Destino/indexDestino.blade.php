@@ -54,7 +54,18 @@
                             <td>{{ $destino->nom_des }}</td>
                             <td>{{ $destino->desc_des }}</td>
                             <td>{{ $destino->ubicacion }}</td>
-                            <td>{{ $destino->imagen_des }}</td>
+                            <td>
+                                @if ($destino->imagen_des)
+                                    <img
+                                        src="{{ asset('storage/' . $destino->imagen_des) }}"
+                                        alt="{{ $destino->nom_des }}"
+                                        class="img-thumbnail"
+                                        style="width: 90px; height: 60px; object-fit: cover;"
+                                    >
+                                @else
+                                    Sin imagen
+                                @endif
+                            </td>
                             <td>
                                 <div class="d-flex gap-2">
                                     <a href="{{ route('destinos.edit', $destino) }}" class="btn btn-warning btn-sm">
