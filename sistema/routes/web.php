@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DestinoController;
 use App\Http\Controllers\HotelController;
+use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\userController;
 
 Route::get('/', function () {
@@ -46,3 +47,13 @@ Route::get('/hoteles/{hotel}/edit', [HotelController::class, 'editHotel'])->name
 Route::put('/hoteles/{hotel}', [HotelController::class, 'updateHotel'])->name('hoteles.update');
 Route::patch('/hoteles/{hotel}', [HotelController::class, 'updateHotel'])->name('hoteles.update');
 Route::delete('/hoteles/{hotel}', [HotelController::class, 'destroyHotel'])->name('hoteles.destroy');
+
+Route::get('/servicios', [ServicioController::class, 'listarServicios'])->name('servicios.index');
+Route::get('/servicios/search', [ServicioController::class, 'searchServicios'])->name('servicios.search');
+Route::get('/servicios/create', [ServicioController::class, 'createServicio'])->name('servicios.create');
+Route::post('/servicios', [ServicioController::class, 'storeServicio'])->name('servicios.store');
+Route::get('/servicios/{servicio}', [ServicioController::class, 'showServicio'])->name('servicios.show');
+Route::get('/servicios/{servicio}/edit', [ServicioController::class, 'editServicio'])->name('servicios.edit');
+Route::put('/servicios/{servicio}', [ServicioController::class, 'updateServicio'])->name('servicios.update');
+Route::patch('/servicios/{servicio}', [ServicioController::class, 'updateServicio'])->name('servicios.update');
+Route::delete('/servicios/{servicio}', [ServicioController::class, 'destroyServicio'])->name('servicios.destroy');

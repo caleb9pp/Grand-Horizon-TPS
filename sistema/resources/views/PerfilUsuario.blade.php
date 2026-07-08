@@ -45,7 +45,7 @@
                          <span class="nav-text">Habitaciones</span>
                       
                 </a>
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ route('servicios.index') }}">
                    <i class="bi bi-bell"></i>
                     <span class="nav-text">Servicios</span>
                 </a>
