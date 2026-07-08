@@ -56,10 +56,12 @@ class DestinoController extends Controller
     public function storeDestino(Request $request)
     {
         $datos = $request->validate([
-            'nom_des' => 'required|string|max:100',
+            'nom_des' => 'required|string|max:100|unique:destinos,nom_des',
             'desc_des' => 'required|string',
             'ubicacion' => 'required|string|max:200',
             'imagen_des' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ], [
+            'nom_des.unique' => 'Este destino ya está registrado.',
         ]);
 
         $datos['imagen_des'] = $request->file('imagen_des')->store('destinos', 'public');
@@ -92,10 +94,12 @@ class DestinoController extends Controller
     public function updateDestino(Request $request, Destino $destino)
     {
         $datos = $request->validate([
-            'nom_des' => 'required|string|max:100',
+            'nom_des' => 'required|string|max:100|unique:destinos,nom_des,' . $destino->id_destino . ',id_destino',
             'desc_des' => 'required|string',
             'ubicacion' => 'required|string|max:200',
             'imagen_des' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ], [
+            'nom_des.unique' => 'Este destino ya está registrado.',
         ]);
 
         if ($request->hasFile('imagen_des')) {
@@ -119,6 +123,11 @@ class DestinoController extends Controller
      */
     public function destroyDestino(Destino $destino)
     {
+        if ($destino->hoteles()->exists()) {
+            return redirect()->route('destinos.index')
+                ->with('error', 'No se puede eliminar este destino porque tiene hoteles asociados.');
+        }
+
         if ($destino->imagen_des) {
             Storage::disk('public')->delete($destino->imagen_des);
         }

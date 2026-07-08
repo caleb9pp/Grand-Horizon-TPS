@@ -35,7 +35,7 @@
                  
                     
                 </a>
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ route('hoteles.index') }}">
                    <i class="bi bi-buildings"></i>
                     <span class="nav-text">Hoteles</span>
                 </a>

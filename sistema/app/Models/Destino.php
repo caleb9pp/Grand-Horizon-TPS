@@ -20,4 +20,9 @@ class Destino extends Model
     {
         return $this->hasMany(Atraccion::class, 'id_destino', 'id_destino');
     }
+
+    public function hoteles(): HasMany
+    {
+        return $this->hasMany(Hotel::class, 'id_destino', 'id_destino');
+    }
 }

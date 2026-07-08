@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DestinoController;
+use App\Http\Controllers\HotelController;
 use App\Http\Controllers\userController;
 
 Route::get('/', function () {
@@ -35,3 +36,13 @@ Route::get('/destinos/{destino}/edit', [DestinoController::class, 'editDestino']
 Route::put('/destinos/{destino}', [DestinoController::class, 'updateDestino'])->name('destinos.update');
 Route::patch('/destinos/{destino}', [DestinoController::class, 'updateDestino'])->name('destinos.update');
 Route::delete('/destinos/{destino}', [DestinoController::class, 'destroyDestino'])->name('destinos.destroy');
+
+Route::get('/hoteles', [HotelController::class, 'listarHoteles'])->name('hoteles.index');
+Route::get('/hoteles/search', [HotelController::class, 'searchHoteles'])->name('hoteles.search');
+Route::get('/hoteles/create', [HotelController::class, 'createHotel'])->name('hoteles.create');
+Route::post('/hoteles', [HotelController::class, 'storeHotel'])->name('hoteles.store');
+Route::get('/hoteles/{hotel}', [HotelController::class, 'showHotel'])->name('hoteles.show');
+Route::get('/hoteles/{hotel}/edit', [HotelController::class, 'editHotel'])->name('hoteles.edit');
+Route::put('/hoteles/{hotel}', [HotelController::class, 'updateHotel'])->name('hoteles.update');
+Route::patch('/hoteles/{hotel}', [HotelController::class, 'updateHotel'])->name('hoteles.update');
+Route::delete('/hoteles/{hotel}', [HotelController::class, 'destroyHotel'])->name('hoteles.destroy');

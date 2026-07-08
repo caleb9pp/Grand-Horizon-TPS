@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('destinos', function (Blueprint $table) {
 
             $table->id('id_destino');
-            $table->string('nom_des', 100);
+            $table->string('nom_des', 100) ->unique();
             $table->text('desc_des');
             $table->string('ubicacion', 200);
             $table->string('imagen_des');
