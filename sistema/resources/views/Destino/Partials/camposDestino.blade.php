@@ -32,17 +32,71 @@
 
 <div class="mb-3">
     <label for="ubicacion" class="form-label">Ubicacion</label>
-    <input
-        type="text"
+    <select
         name="ubicacion"
         id="ubicacion"
-        class="form-control @error('ubicacion') is-invalid @enderror"
-        value="{{ old('ubicacion', $destino->ubicacion ?? '') }}"
-        maxlength="200"
+        class="form-select @error('ubicacion') is-invalid @enderror"
         required
     >
+        <option value="">Selecciona un estado</option>
+        @foreach ($estadosMexico as $estado)
+            <option
+                value="{{ $estado }}"
+                @selected(old('ubicacion', $destino->ubicacion ?? '') === $estado)
+            >
+                {{ $estado }}
+            </option>
+        @endforeach
+    </select>
     @error('ubicacion')
         <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
+
+@php
+    $serviciosSeleccionados = old(
+        'servicios',
+        isset($destino) ? $destino->servicios->pluck('id_servicio')->all() : []
+    );
+
+    $serviciosSeleccionados = array_map('strval', $serviciosSeleccionados ?? []);
+@endphp
+
+<div class="mb-3">
+    <label class="form-label">Servicios y atracciones disponibles</label>
+
+    @if ($servicios->isEmpty())
+        <div class="alert alert-warning mb-0">
+            No hay servicios ni atracciones registrados. Primero crea servicios para poder asignarlos al destino.
+        </div>
+    @else
+        <div class="row g-2">
+            @foreach ($servicios as $servicio)
+                <div class="col-md-6 col-lg-4">
+                    <div class="form-check border rounded p-3 h-100">
+                        <input
+                            type="checkbox"
+                            name="servicios[]"
+                            id="servicio_destino_{{ $servicio->id_servicio }}"
+                            class="form-check-input @error('servicios') is-invalid @enderror @error('servicios.*') is-invalid @enderror"
+                            value="{{ $servicio->id_servicio }}"
+                            @checked(in_array((string) $servicio->id_servicio, $serviciosSeleccionados, true))
+                        >
+                        <label class="form-check-label" for="servicio_destino_{{ $servicio->id_servicio }}">
+                            <strong>{{ $servicio->nom_servicio }}</strong>
+                            <span class="d-block text-muted small">{{ $servicio->descripcion }}</span>
+                        </label>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
+
+    @error('servicios')
+        <div class="text-danger small mt-2">{{ $message }}</div>
+    @enderror
+    @error('servicios.*')
+        <div class="text-danger small mt-2">{{ $message }}</div>
     @enderror
 </div>
 

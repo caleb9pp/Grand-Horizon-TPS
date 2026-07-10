@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Destino;
+use App\Models\Servicio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class DestinoController extends Controller
 {
@@ -14,7 +16,7 @@ class DestinoController extends Controller
     public function listarDestinos()
     {
         $buscar = '';
-        $destinos = Destino::with('atracciones')
+        $destinos = Destino::with('servicios')
             ->orderBy('id_destino', 'desc')
             ->get();
 
@@ -29,25 +31,30 @@ class DestinoController extends Controller
             return redirect()->route('destinos.index');
         }
 
-        $destinos = Destino::with('atracciones')
+        $destinos = Destino::with('servicios')
             ->where(function ($query) use ($buscar) {
                 $query->where('nom_des', 'like', "%{$buscar}%")
                     ->orWhere('desc_des', 'like', "%{$buscar}%")
-                    ->orWhere('ubicacion', 'like', "%{$buscar}%");
+                    ->orWhere('ubicacion', 'like', "%{$buscar}%")
+                    ->orWhereHas('servicios', function ($servicioQuery) use ($buscar) {
+                        $servicioQuery->where('nom_servicio', 'like', "%{$buscar}%");
+                    });
             })
             ->orderBy('id_destino', 'desc')
             ->get();
 
         return view('Destino.indexDestino', compact('destinos', 'buscar'));
     }
-    
 
     /**
      * Show the form for creating a new resource.
      */
     public function createDestino()
     {
-        return view('Destino.FormDestino');
+        $estadosMexico = $this->estadosMexico();
+        $servicios = Servicio::orderBy('nom_servicio')->get();
+
+        return view('Destino.FormDestino', compact('estadosMexico', 'servicios'));
     }
 
     /**
@@ -58,15 +65,22 @@ class DestinoController extends Controller
         $datos = $request->validate([
             'nom_des' => 'required|string|max:100|unique:destinos,nom_des',
             'desc_des' => 'required|string',
-            'ubicacion' => 'required|string|max:200',
+            'ubicacion' => ['required', 'string', 'max:200', Rule::in($this->estadosMexico())],
+            'servicios' => 'nullable|array',
+            'servicios.*' => 'exists:servicios,id_servicio',
             'imagen_des' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
         ], [
-            'nom_des.unique' => 'Este destino ya está registrado.',
+            'nom_des.unique' => 'Este destino ya esta registrado.',
+            'ubicacion.in' => 'Selecciona un estado valido.',
         ]);
+
+        $servicios = $datos['servicios'] ?? [];
+        unset($datos['servicios']);
 
         $datos['imagen_des'] = $request->file('imagen_des')->store('destinos', 'public');
 
-        Destino::create($datos);
+        $destino = Destino::create($datos);
+        $destino->servicios()->sync($servicios);
 
         return redirect()->route('destinos.index')
             ->with('mensaje', 'Destino creado correctamente.');
@@ -85,7 +99,11 @@ class DestinoController extends Controller
      */
     public function editDestino(Destino $destino)
     {
-        return view('Destino.EditDestino', compact('destino'));
+        $estadosMexico = $this->estadosMexico();
+        $servicios = Servicio::orderBy('nom_servicio')->get();
+        $destino->load('servicios');
+
+        return view('Destino.EditDestino', compact('destino', 'estadosMexico', 'servicios'));
     }
 
     /**
@@ -96,11 +114,17 @@ class DestinoController extends Controller
         $datos = $request->validate([
             'nom_des' => 'required|string|max:100|unique:destinos,nom_des,' . $destino->id_destino . ',id_destino',
             'desc_des' => 'required|string',
-            'ubicacion' => 'required|string|max:200',
+            'ubicacion' => ['required', 'string', 'max:200', Rule::in($this->estadosMexico())],
+            'servicios' => 'nullable|array',
+            'servicios.*' => 'exists:servicios,id_servicio',
             'imagen_des' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ], [
-            'nom_des.unique' => 'Este destino ya está registrado.',
+            'nom_des.unique' => 'Este destino ya esta registrado.',
+            'ubicacion.in' => 'Selecciona un estado valido.',
         ]);
+
+        $servicios = $datos['servicios'] ?? [];
+        unset($datos['servicios']);
 
         if ($request->hasFile('imagen_des')) {
             if ($destino->imagen_des) {
@@ -113,6 +137,7 @@ class DestinoController extends Controller
         }
 
         $destino->update($datos);
+        $destino->servicios()->sync($servicios);
 
         return redirect()->route('destinos.index')
             ->with('mensaje', 'Destino actualizado correctamente.');
@@ -136,5 +161,43 @@ class DestinoController extends Controller
 
         return redirect()->route('destinos.index')
             ->with('mensaje', 'Destino eliminado correctamente.');
+    }
+
+    private function estadosMexico(): array
+    {
+        return [
+            'Aguascalientes',
+            'Baja California',
+            'Baja California Sur',
+            'Campeche',
+            'Chiapas',
+            'Chihuahua',
+            'Ciudad de Mexico',
+            'Coahuila',
+            'Colima',
+            'Durango',
+            'Estado de Mexico',
+            'Guanajuato',
+            'Guerrero',
+            'Hidalgo',
+            'Jalisco',
+            'Michoacan',
+            'Morelos',
+            'Nayarit',
+            'Nuevo Leon',
+            'Oaxaca',
+            'Puebla',
+            'Queretaro',
+            'Quintana Roo',
+            'San Luis Potosi',
+            'Sinaloa',
+            'Sonora',
+            'Tabasco',
+            'Tamaulipas',
+            'Tlaxcala',
+            'Veracruz',
+            'Yucatan',
+            'Zacatecas',
+        ];
     }
 }

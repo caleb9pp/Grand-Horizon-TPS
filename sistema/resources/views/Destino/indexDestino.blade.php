@@ -12,7 +12,7 @@
         <div class="destinos-search">
             <div>
                 <h3 class="mb-0">Buscar</h3>
-                <p>Consulta destinos por nombre, descripcion o ubicacion.</p>
+                <p>Consulta destinos por nombre, descripcion, ubicacion, servicio o atraccion.</p>
             </div>
 
             <form action="{{ route('destinos.search') }}" method="GET" class="destinos-search-form">
@@ -74,13 +74,8 @@
                                 @endif
                             </td>
                             <td>
-                                @forelse ($destino->atracciones as $atraccion)
-                                    <div class="mb-2">
-                                        <ul>
-                                            <li>{{ $atraccion->nom_atr }}</li>
-                                        </ul>
-                                       
-                                    </div>
+                                @forelse ($destino->servicios as $servicio)
+                                    <span class="badge bg-info text-dark mb-1">{{ $servicio->nom_servicio }}</span>
                                 @empty
                                     Sin atracciones
                                 @endforelse

@@ -21,4 +21,10 @@ class Servicio extends Model
         return $this->belongsToMany(Hotel::class, 'hotel_servicio', 'id_servicio', 'id_hotel')
             ->withTimestamps();
     }
+
+    public function destinos(): BelongsToMany
+    {
+        return $this->belongsToMany(Destino::class, 'destino_servicio', 'id_servicio', 'id_destino')
+            ->withTimestamps();
+    }
 }
