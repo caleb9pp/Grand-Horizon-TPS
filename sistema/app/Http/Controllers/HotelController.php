@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Destino;
 use App\Models\Hotel;
+use App\Models\Servicio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,7 +16,7 @@ class HotelController extends Controller
     public function listarHoteles()
     {
         $buscar = '';
-        $hoteles = Hotel::with('destino')
+        $hoteles = Hotel::with(['destino', 'servicios'])
             ->orderBy('id_hotel', 'desc')
             ->get();
 
@@ -30,7 +31,7 @@ class HotelController extends Controller
             return redirect()->route('hoteles.index');
         }
 
-        $hoteles = Hotel::with('destino')
+        $hoteles = Hotel::with(['destino', 'servicios'])
             ->where(function ($query) use ($buscar) {
                 $query->where('nom_hotel', 'like', "%{$buscar}%")
                     ->orWhere('dir_hotel', 'like', "%{$buscar}%")
@@ -50,8 +51,9 @@ class HotelController extends Controller
     public function createHotel()
     {
         $destinos = Destino::orderBy('nom_des')->get();
+        $servicios = Servicio::orderBy('nom_servicio')->get();
 
-        return view('Hotel.FormHotel', compact('destinos'));
+        return view('Hotel.FormHotel', compact('destinos', 'servicios'));
     }
 
     /**
@@ -66,13 +68,19 @@ class HotelController extends Controller
             'politica' => 'required|string',
             'imagen_hotel' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
             'id_destino' => 'required|exists:destinos,id_destino',
+            'servicios' => 'nullable|array',
+            'servicios.*' => 'exists:servicios,id_servicio',
         ], [
             'nom_hotel.unique' => 'Este hotel ya esta registrado.',
         ]);
 
+        $servicios = $datos['servicios'] ?? [];
+        unset($datos['servicios']);
+
         $datos['imagen_hotel'] = $request->file('imagen_hotel')->store('hoteles', 'public');
 
-        Hotel::create($datos);
+        $hotel = Hotel::create($datos);
+        $hotel->servicios()->sync($servicios);
 
         return redirect()->route('hoteles.index')
             ->with('mensaje', 'Hotel creado correctamente.');
@@ -92,8 +100,10 @@ class HotelController extends Controller
     public function editHotel(Hotel $hotel)
     {
         $destinos = Destino::orderBy('nom_des')->get();
+        $servicios = Servicio::orderBy('nom_servicio')->get();
+        $hotel->load('servicios');
 
-        return view('Hotel.EditHotel', compact('hotel', 'destinos'));
+        return view('Hotel.EditHotel', compact('hotel', 'destinos', 'servicios'));
     }
 
     /**
@@ -108,9 +118,14 @@ class HotelController extends Controller
             'politica' => 'required|string',
             'imagen_hotel' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'id_destino' => 'required|exists:destinos,id_destino',
+            'servicios' => 'nullable|array',
+            'servicios.*' => 'exists:servicios,id_servicio',
         ], [
             'nom_hotel.unique' => 'Este hotel ya esta registrado.',
         ]);
+
+        $servicios = $datos['servicios'] ?? [];
+        unset($datos['servicios']);
 
         if ($request->hasFile('imagen_hotel')) {
             if ($hotel->imagen_hotel) {
@@ -123,6 +138,7 @@ class HotelController extends Controller
         }
 
         $hotel->update($datos);
+        $hotel->servicios()->sync($servicios);
 
         return redirect()->route('hoteles.index')
             ->with('mensaje', 'Hotel actualizado correctamente.');

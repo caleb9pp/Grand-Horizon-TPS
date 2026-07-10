@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Servicio extends Model
 {
@@ -14,4 +15,10 @@ class Servicio extends Model
         'nom_servicio',
         'descripcion',
     ];
+
+    public function hoteles(): BelongsToMany
+    {
+        return $this->belongsToMany(Hotel::class, 'hotel_servicio', 'id_servicio', 'id_hotel')
+            ->withTimestamps();
+    }
 }

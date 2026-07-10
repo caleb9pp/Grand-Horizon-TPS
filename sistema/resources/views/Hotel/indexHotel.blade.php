@@ -45,6 +45,7 @@
                         <th>Direccion</th>
                         <th>Contacto</th>
                         <th>Destino</th>
+                        <th>Servicios</th>
                         <th>Imagen</th>
                         <th>Acciones</th>
                     </tr>
@@ -56,6 +57,13 @@
                             <td>{{ $hotel->dir_hotel }}</td>
                             <td>{{ $hotel->contacto }}</td>
                             <td>{{ $hotel->destino->nom_des ?? 'Sin destino' }}</td>
+                            <td>
+                                @forelse ($hotel->servicios as $servicio)
+                                    <span class="badge bg-info text-dark">{{ $servicio->nom_servicio }}</span>
+                                @empty
+                                    Sin servicios
+                                @endforelse
+                            </td>
                             <td>
                                 @if ($hotel->imagen_hotel)
                                     <img

@@ -83,6 +83,53 @@
     @enderror
 </div>
 
+@php
+    $serviciosSeleccionados = old(
+        'servicios',
+        isset($hotel) ? $hotel->servicios->pluck('id_servicio')->all() : []
+    );
+
+    $serviciosSeleccionados = array_map('strval', $serviciosSeleccionados ?? []);
+@endphp
+
+<div class="mb-3">
+    <label class="form-label">Servicios disponibles</label>
+
+    @if ($servicios->isEmpty())
+        <div class="alert alert-warning mb-0">
+            No hay servicios registrados. Primero crea servicios para poder asignarlos al hotel.
+        </div>
+    @else
+        <div class="row g-2">
+            @foreach ($servicios as $servicio)
+                <div class="col-md-6 col-lg-4">
+                    <div class="form-check border rounded p-3 h-100">
+                        <input
+                            type="checkbox"
+                            name="servicios[]"
+                            id="servicio_{{ $servicio->id_servicio }}"
+                            class="form-check-input @error('servicios') is-invalid @enderror @error('servicios.*') is-invalid @enderror"
+                            value="{{ $servicio->id_servicio }}"
+                            @checked(in_array((string) $servicio->id_servicio, $serviciosSeleccionados, true))
+                        >
+                        <label class="form-check-label" for="servicio_{{ $servicio->id_servicio }}">
+                            <strong>{{ $servicio->nom_servicio }}</strong>
+                            <span class="d-block text-muted small">{{ $servicio->descripcion }}</span>
+                        </label>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
+
+    @error('servicios')
+        <div class="text-danger small mt-2">{{ $message }}</div>
+    @enderror
+    @error('servicios.*')
+        <div class="text-danger small mt-2">{{ $message }}</div>
+    @enderror
+</div>
+
 <div class="mb-3">
     <label for="imagen_hotel" class="form-label">Imagen del hotel</label>
     <input
