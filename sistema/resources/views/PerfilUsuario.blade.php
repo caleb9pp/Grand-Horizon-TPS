@@ -40,7 +40,7 @@
                     <span class="nav-text">Hoteles</span>
                 </a>
 
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ route('habitaciones.index') }}">
                     <i class="bi bi-door-closed"></i>
                          <span class="nav-text">Habitaciones</span>
                       
