@@ -12,7 +12,7 @@
         <div class="destinos-search">
             <div>
                 <h3 class="mb-0">Buscar</h3>
-                <p>Consulta habitaciones por número, capacidad, hotel o estado.</p>
+                <p>Consulta habitaciones por numero, capacidad, hotel, estado, categoria o servicio.</p>
             </div>
 
             <form action="{{ route('habitaciones.search') }}" method="GET" class="destinos-search-form">
@@ -20,7 +20,7 @@
                     type="search"
                     name="buscar"
                     class="form-control"
-                    placeholder="Ej. 101, Doble, Hotel Maya"
+                    placeholder="Ej. 101, Suite, WiFi"
                     value="{{ $buscar }}"
                 >
                 <button type="submit" class="btn btn-primary">Buscar</button>
@@ -47,10 +47,12 @@
             <table class="table table-bordered table-hover align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th>Número</th>
+                        <th>Numero</th>
                         <th>Capacidad</th>
                         <th>Tarifa/Noche</th>
                         <th>Hotel</th>
+                        <th>Categoria</th>
+                        <th>Servicios</th>
                         <th>Estado</th>
                         <th>Imagen</th>
                         <th>Acciones</th>
@@ -62,13 +64,21 @@
                             <td>{{ $habitacion->numero_habi }}</td>
                             <td>
                                 <span class="badge bg-info text-dark">
-                                    {{ $habitacion->capacidad }} huéspedes
+                                    {{ $habitacion->capacidad }} huespedes
                                 </span>
                             </td>
                             <td>
                                 <strong>${{ number_format($habitacion->tarifa_noche, 2) }}</strong>
                             </td>
                             <td>{{ $habitacion->hotel->nom_hotel ?? 'Sin hotel' }}</td>
+                            <td>{{ $habitacion->categoria->categoria ?? 'Sin categoria' }}</td>
+                            <td>
+                                @forelse ($habitacion->servicios as $servicio)
+                                    <span class="badge bg-info text-dark">{{ $servicio->nom_servicio }}</span>
+                                @empty
+                                    Sin servicios
+                                @endforelse
+                            </td>
                             <td>
                                 @php
                                     $estado = $habitacion->estado->tipo_estado ?? 'Desconocido';
@@ -86,7 +96,7 @@
                                 @if ($habitacion->imagen)
                                     <img
                                         src="{{ asset('storage/' . $habitacion->imagen) }}"
-                                        alt="Habitación {{ $habitacion->numero_habi }}"
+                                        alt="Habitacion {{ $habitacion->numero_habi }}"
                                         class="img-thumbnail"
                                         style="width: 90px; height: 60px; object-fit: cover;"
                                     >
@@ -102,7 +112,7 @@
 
                                     <form action="{{ route('habitaciones.destroy', $habitacion) }}"
                                     method="POST"
-                                    onsubmit="return confirm('¿Estás seguro de eliminar esta habitación?');">
+                                    onsubmit="return confirm('Estas seguro de eliminar esta habitacion?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm">
@@ -114,7 +124,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center">
+                            <td colspan="9" class="text-center">
                                 @if ($buscar !== '')
                                     No se encontraron habitaciones para "{{ $buscar }}".
                                 @else

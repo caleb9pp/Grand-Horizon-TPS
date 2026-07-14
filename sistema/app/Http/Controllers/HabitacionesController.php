@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
+use App\Models\EstadoHabi;
 use App\Models\Habitaciones;
 use App\Models\Hotel;
-use App\Models\EstadoHabi;
+use App\Models\Servicio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,7 +18,7 @@ class HabitacionesController extends Controller
     public function listarHabitaciones()
     {
         $buscar = '';
-        $habitaciones = Habitaciones::with(['hotel', 'estado'])
+        $habitaciones = Habitaciones::with(['hotel', 'estado', 'categoria', 'servicios'])
             ->orderBy('id_habitacion', 'desc')
             ->get();
 
@@ -31,7 +33,7 @@ class HabitacionesController extends Controller
             return redirect()->route('habitaciones.index');
         }
 
-        $habitaciones = Habitaciones::with(['hotel', 'estado'])
+        $habitaciones = Habitaciones::with(['hotel', 'estado', 'categoria', 'servicios'])
             ->where(function ($query) use ($buscar) {
                 $query->where('numero_habi', 'like', "%{$buscar}%")
                     ->orWhere('capacidad', 'like', "%{$buscar}%")
@@ -40,6 +42,12 @@ class HabitacionesController extends Controller
                     })
                     ->orWhereHas('estado', function ($estadoQuery) use ($buscar) {
                         $estadoQuery->where('tipo_estado', 'like', "%{$buscar}%");
+                    })
+                    ->orWhereHas('categoria', function ($categoriaQuery) use ($buscar) {
+                        $categoriaQuery->where('categoria', 'like', "%{$buscar}%");
+                    })
+                    ->orWhereHas('servicios', function ($servicioQuery) use ($buscar) {
+                        $servicioQuery->where('nom_servicio', 'like', "%{$buscar}%");
                     });
             })
             ->orderBy('id_habitacion', 'desc')
@@ -55,8 +63,10 @@ class HabitacionesController extends Controller
     {
         $hoteles = Hotel::orderBy('nom_hotel')->get();
         $estados = EstadoHabi::orderBy('tipo_estado')->get();
+        $categorias = Categoria::orderBy('categoria')->get();
+        $servicios = Servicio::orderBy('nom_servicio')->get();
 
-        return view('Habitaciones.FormHabitacion', compact('hoteles', 'estados'));
+        return view('Habitaciones.FormHabitacion', compact('hoteles', 'estados', 'categorias', 'servicios'));
     }
 
     /**
@@ -71,16 +81,24 @@ class HabitacionesController extends Controller
             'imagen' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
             'id_estado' => 'required|exists:estado_habi,id_estado',
             'id_hotel' => 'required|exists:hotels,id_hotel',
+            'categoria' => 'required|string|max:100',
+            'servicios' => 'nullable|array',
+            'servicios.*' => 'exists:servicios,id_servicio',
         ], [
-            'numero_habi.unique' => 'Este número de habitación ya está registrado.',
+            'numero_habi.unique' => 'Este numero de habitacion ya esta registrado.',
         ]);
+
+        $servicios = $datos['servicios'] ?? [];
+        $datos['id_categoria'] = $this->obtenerCategoriaId($datos['categoria']);
+        unset($datos['categoria'], $datos['servicios']);
 
         $datos['imagen'] = $request->file('imagen')->store('habitaciones', 'public');
 
-        Habitaciones::create($datos);
+        $habitacion = Habitaciones::create($datos);
+        $habitacion->servicios()->sync($servicios);
 
         return redirect()->route('habitaciones.index')
-            ->with('mensaje', 'Habitación creada correctamente.');
+            ->with('mensaje', 'Habitacion creada correctamente.');
     }
 
     /**
@@ -98,9 +116,11 @@ class HabitacionesController extends Controller
     {
         $hoteles = Hotel::orderBy('nom_hotel')->get();
         $estados = EstadoHabi::orderBy('tipo_estado')->get();
-        $habitacion->load(['hotel', 'estado']);
+        $categorias = Categoria::orderBy('categoria')->get();
+        $servicios = Servicio::orderBy('nom_servicio')->get();
+        $habitacion->load(['hotel', 'estado', 'categoria', 'servicios']);
 
-        return view('Habitaciones.EditHabitacion', compact('habitacion', 'hoteles', 'estados'));
+        return view('Habitaciones.EditHabitacion', compact('habitacion', 'hoteles', 'estados', 'categorias', 'servicios'));
     }
 
     /**
@@ -115,9 +135,16 @@ class HabitacionesController extends Controller
             'imagen' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'id_estado' => 'required|exists:estado_habi,id_estado',
             'id_hotel' => 'required|exists:hotels,id_hotel',
+            'categoria' => 'required|string|max:100',
+            'servicios' => 'nullable|array',
+            'servicios.*' => 'exists:servicios,id_servicio',
         ], [
-            'numero_habi.unique' => 'Este número de habitación ya está registrado.',
+            'numero_habi.unique' => 'Este numero de habitacion ya esta registrado.',
         ]);
+
+        $servicios = $datos['servicios'] ?? [];
+        $datos['id_categoria'] = $this->obtenerCategoriaId($datos['categoria']);
+        unset($datos['categoria'], $datos['servicios']);
 
         if ($request->hasFile('imagen')) {
             if ($habitacion->imagen) {
@@ -130,9 +157,10 @@ class HabitacionesController extends Controller
         }
 
         $habitacion->update($datos);
+        $habitacion->servicios()->sync($servicios);
 
         return redirect()->route('habitaciones.index')
-            ->with('mensaje', 'Habitación actualizada correctamente.');
+            ->with('mensaje', 'Habitacion actualizada correctamente.');
     }
 
     /**
@@ -148,18 +176,27 @@ class HabitacionesController extends Controller
             $habitacion->delete();
 
             return redirect()->route('habitaciones.index')
-                ->with('mensaje', 'Habitación eliminada correctamente.');
+                ->with('mensaje', 'Habitacion eliminada correctamente.');
         } catch (\Illuminate\Database\QueryException $e) {
             if ($e->getCode() === '23000') {
                 return redirect()->route('habitaciones.index')
-                    ->with('error', 'No se puede eliminar esta habitación porque tiene reservas o datos asociados.');
+                    ->with('error', 'No se puede eliminar esta habitacion porque tiene reservas o datos asociados.');
             }
 
             return redirect()->route('habitaciones.index')
-                ->with('error', 'Error al eliminar la habitación: ' . $e->getMessage());
+                ->with('error', 'Error al eliminar la habitacion: ' . $e->getMessage());
         } catch (\Exception $e) {
             return redirect()->route('habitaciones.index')
-                ->with('error', 'Error inesperado al eliminar la habitación.');
+                ->with('error', 'Error inesperado al eliminar la habitacion.');
         }
+    }
+
+    private function obtenerCategoriaId(string $categoria): int
+    {
+        $categoria = preg_replace('/\s+/', ' ', trim($categoria));
+
+        return Categoria::firstOrCreate([
+            'categoria' => $categoria,
+        ])->id_categoria;
     }
 }

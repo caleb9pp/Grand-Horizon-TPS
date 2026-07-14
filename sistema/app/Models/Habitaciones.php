@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Habitaciones extends Model
 {
@@ -18,6 +19,7 @@ class Habitaciones extends Model
         'imagen',
         'id_estado',
         'id_hotel',
+        'id_categoria',
     ];
 
     public function hotel(): BelongsTo
@@ -28,5 +30,16 @@ class Habitaciones extends Model
     public function estado(): BelongsTo
     {
         return $this->belongsTo(EstadoHabi::class, 'id_estado', 'id_estado');
+    }
+
+    public function categoria(): BelongsTo
+    {
+        return $this->belongsTo(Categoria::class, 'id_categoria', 'id_categoria');
+    }
+
+    public function servicios(): BelongsToMany
+    {
+        return $this->belongsToMany(Servicio::class, 'habitacion_servicio', 'id_habitacion', 'id_servicio')
+            ->withTimestamps();
     }
 }

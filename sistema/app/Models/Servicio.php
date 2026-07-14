@@ -27,4 +27,10 @@ class Servicio extends Model
         return $this->belongsToMany(Destino::class, 'destino_servicio', 'id_servicio', 'id_destino')
             ->withTimestamps();
     }
+
+    public function habitaciones(): BelongsToMany
+    {
+        return $this->belongsToMany(Habitaciones::class, 'habitacion_servicio', 'id_servicio', 'id_habitacion')
+            ->withTimestamps();
+    }
 }
