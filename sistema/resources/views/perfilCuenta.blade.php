@@ -8,11 +8,23 @@
                 <h1>Hola, {{ $usuario->nombre }}</h1>
                 <p>Consulta tu informacion de acceso y actualiza los datos de tu cuenta.</p>
             </div>
+            <form action="{{ route('logout') }}" method="POST" class="header-actions">
+                @csrf
+                <button type="submit" class="btn-gh secondary">
+                    Cerrar sesion
+                </button>
+            </form>
         </header>
 
         @if (session('mensaje'))
             <div id="mensaje" class="alert alert-success">
                 {{ session('mensaje') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div id="mensaje" class="alert alert-danger">
+                {{ session('error') }}
             </div>
         @endif
 
@@ -47,7 +59,7 @@
                 <section class="panel section-panel">
                     <div class="section-title">
                         <h2>Editar informacion</h2>
-                        <span>Los campos de contraseña son opcionales.</span>
+                        <span>Deja los campos de contraseña en blanco si no deseas cambiarla.</span>
                     </div>
 
                     <form action="{{ route('perfil.update') }}" method="POST" class="profile-edit-form">

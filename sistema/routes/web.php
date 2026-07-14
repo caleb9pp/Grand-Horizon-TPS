@@ -9,14 +9,22 @@ use App\Http\Controllers\userController;
 
 Route::get('/', function () {
     return view('index');
-});
+})->name('index');
 
 Route::get('/iniciarSesion', function () {
     return view('iniciarSesion');
-});
+})->name('clientes.login.form');
+
+Route::post('/iniciarSesion', [userController::class, 'loginCliente'])->name('clientes.login');
+Route::get('/registrarse', function () {
+    return view('registrarse');
+})->name('clientes.register.form');
+Route::post('/registrarse', [userController::class, 'registerCliente'])->name('clientes.register');
 
 Route::get('/portalEmpleados', function () {
-    $roles = \App\Models\Rol::orderBy('id_rol')->get();
+    $roles = \App\Models\Rol::where('nom_rol', '!=', 'Cliente')
+        ->orderBy('id_rol')
+        ->get();
 
     return view('portalEmpleados', compact('roles'));
 })->name('login');
@@ -30,10 +38,15 @@ Route::get('/PerfilUsuario', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/mi-perfil', [userController::class, 'editPerfil'])->name('perfil.edit');
     Route::put('/mi-perfil', [userController::class, 'updatePerfil'])->name('perfil.update');
+    Route::post('/cerrar-sesion', [userController::class, 'logout'])->name('logout');
 
     Route::get('/cuentas', [userController::class, 'listarCuentas'])->name('cuentas.index');
     Route::get('/cuentas/create', [userController::class, 'createCuenta'])->name('cuentas.create');
     Route::post('/cuentas', [userController::class, 'storeCuenta'])->name('cuentas.store');
+    Route::get('/cuentas/{usuario}/edit', [userController::class, 'editCuenta'])->name('cuentas.edit');
+    Route::put('/cuentas/{usuario}', [userController::class, 'updateCuenta'])->name('cuentas.update');
+    Route::patch('/cuentas/{usuario}', [userController::class, 'updateCuenta'])->name('cuentas.update');
+    Route::delete('/cuentas/{usuario}', [userController::class, 'destroyCuenta'])->name('cuentas.destroy');
 });
 
 Route::get('/prueba', function () {

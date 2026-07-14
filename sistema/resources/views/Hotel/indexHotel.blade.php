@@ -36,6 +36,11 @@
                 {{ session('mensaje') }}
             </div>
         @endif
+          @if (session('error'))
+            <div id="mensaje" class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
 
         <div class="table-responsive">
             <table class="table table-bordered table-hover align-middle">

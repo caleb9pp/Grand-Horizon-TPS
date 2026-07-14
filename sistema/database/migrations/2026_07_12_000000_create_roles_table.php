@@ -22,6 +22,7 @@ return new class extends Migration
             ['nom_rol' => 'Recepcion', 'created_at' => now(), 'updated_at' => now()],
             ['nom_rol' => 'Gerente', 'created_at' => now(), 'updated_at' => now()],
             ['nom_rol' => 'Administracion', 'created_at' => now(), 'updated_at' => now()],
+            ['nom_rol' => 'Cliente', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 

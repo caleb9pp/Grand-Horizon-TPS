@@ -15,6 +15,12 @@
             </div>
         @endif
 
+        @if (session('error'))
+            <div id="mensaje" class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <div class="table-responsive">
             <table class="table table-bordered table-hover align-middle">
                 <thead class="table-light">
@@ -23,6 +29,7 @@
                         <th>Usuario</th>
                         <th>Celular</th>
                         <th>Rol</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,10 +39,27 @@
                             <td>{{ $usuario->nom_usuario }}</td>
                             <td>{{ $usuario->celular }}</td>
                             <td>{{ $usuario->rol->nom_rol ?? 'Sin rol' }}</td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <a href="{{ route('cuentas.edit', $usuario) }}" class="btn btn-warning btn-sm">
+                                        Editar
+                                    </a>
+
+                                    <form action="{{ route('cuentas.destroy', $usuario) }}"
+                                    method="POST"
+                                    onsubmit="return confirm('Estas seguro de eliminar esta cuenta?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            Eliminar
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="text-center">
+                            <td colspan="5" class="text-center">
                                 No hay cuentas registradas.
                             </td>
                         </tr>

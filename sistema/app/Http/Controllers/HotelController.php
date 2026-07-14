@@ -149,6 +149,11 @@ class HotelController extends Controller
      */
     public function destroyHotel(Hotel $hotel)
     {
+        if ($hotel->habitaciones()->exists()) {
+            return redirect()->route('hoteles.index')
+                ->with('error', 'No se puede eliminar este hotel porque tiene habitaciones asociadas.');
+        }
+
         if ($hotel->imagen_hotel) {
             Storage::disk('public')->delete($hotel->imagen_hotel);
         }

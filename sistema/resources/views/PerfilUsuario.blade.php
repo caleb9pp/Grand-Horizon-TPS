@@ -28,6 +28,14 @@
                 </button>
             </div>
 
+            @php
+                $usuarioSesion = auth()->user();
+                $esGerente = ($usuarioSesion?->rol?->nom_rol ?? '') === 'Gerente';
+                $iniciales = $usuarioSesion
+                    ? strtoupper(substr($usuarioSesion->nombre, 0, 1) . substr($usuarioSesion->apellido, 0, 1))
+                    : 'US';
+            @endphp
+
             <nav class="nav-menu">
                 <a class="nav-link" href="{{ route('destinos.index') }}">
                  <i class="bi bi-globe-americas-fill"></i>
@@ -40,29 +48,24 @@
                     <span class="nav-text">Hoteles</span>
                 </a>
 
-                <a class="nav-link" href="{{ route('habitaciones.index') }}">
-                    <i class="bi bi-door-closed"></i>
-                         <span class="nav-text">Habitaciones</span>
-                      
-                </a>
-                <a class="nav-link" href="{{ route('servicios.index') }}">
-                   <i class="bi bi-bell"></i>
-                    <span class="nav-text">Servicios</span>
-                </a>
+                @unless ($esGerente)
+                    <a class="nav-link" href="{{ route('habitaciones.index') }}">
+                        <i class="bi bi-door-closed"></i>
+                             <span class="nav-text">Habitaciones</span>
+                          
+                    </a>
+                    <a class="nav-link" href="{{ route('servicios.index') }}">
+                       <i class="bi bi-bell"></i>
+                        <span class="nav-text">Servicios</span>
+                    </a>
 
-                 <a class="nav-link" href="{{ route('cuentas.index') }}">
-                   <i class="bi bi-check"></i>
-                    <span class="nav-text">Gestion de cuentas</span>
-                </a>
+                     <a class="nav-link" href="{{ route('cuentas.index') }}">
+                       <i class="bi bi-check"></i>
+                        <span class="nav-text">Gestion de cuentas</span>
+                    </a>
+                @endunless
               
             </nav>
-
-            @php
-                $usuarioSesion = auth()->user();
-                $iniciales = $usuarioSesion
-                    ? strtoupper(substr($usuarioSesion->nombre, 0, 1) . substr($usuarioSesion->apellido, 0, 1))
-                    : 'US';
-            @endphp
 
             <div class="sidebar-footer">
                 <a class="staff-card staff-card-link" href="{{ route('perfil.edit') }}">

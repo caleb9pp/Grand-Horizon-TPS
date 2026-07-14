@@ -14,7 +14,9 @@
 
         <section class="login-card" aria-labelledby="login-title">
             <header class="login-brand">
-                <img src="{{ asset('img/logo png.png') }}" alt="Grand Horizon" class="login-logo">
+               <a href="{{ url('/') }}" class="employee-link">
+                    <img src="{{ asset('img/logo png.png') }}" alt="Grand Horizon" class="login-logo">
+                </a>
                 <h1 id="login-title">Grand Horizon</h1>
                 <p>Portal de Empleados</p>
             </header>
