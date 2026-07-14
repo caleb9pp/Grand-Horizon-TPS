@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -23,6 +24,7 @@ class User extends Authenticatable
         'apellido',
         'nom_usuario',
         'celular',
+        'id_rol',
         'password',
     ];
 
@@ -46,5 +48,10 @@ class User extends Authenticatable
         return [
             'password' => 'hashed',
         ];
+    }
+
+    public function rol(): BelongsTo
+    {
+        return $this->belongsTo(Rol::class, 'id_rol', 'id_rol');
     }
 }

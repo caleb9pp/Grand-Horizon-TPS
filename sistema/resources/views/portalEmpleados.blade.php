@@ -25,6 +25,9 @@
                 @error('nom_usuario')
                     <p class="login-error">{{ $message }}</p>
                 @enderror
+                @error('departamento')
+                    <p class="login-error">{{ $message }}</p>
+                @enderror
 
                 <div class="form-group">
                     <label for="empleado-id">Usuario</label>
@@ -45,9 +48,11 @@
                     <label for="departamento">Departamento</label>
                     <select id="departamento" name="departamento" required>
                         <option value="">Seleccione un departamento</option>
-                        <option value="recepcion">Recepción</option>
-                        <option value="reservas">Gerente</option>
-                        <option value="administracion">Administración</option>
+                        @foreach ($roles as $rol)
+                            <option value="{{ $rol->id_rol }}" @selected((string) old('departamento') === (string) $rol->id_rol)>
+                                {{ $rol->nom_rol }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
 

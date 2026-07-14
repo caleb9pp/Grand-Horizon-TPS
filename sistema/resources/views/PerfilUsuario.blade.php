@@ -50,21 +50,28 @@
                     <span class="nav-text">Servicios</span>
                 </a>
 
-                 <a class="nav-link" href="#">
+                 <a class="nav-link" href="{{ route('cuentas.index') }}">
                    <i class="bi bi-check"></i>
                     <span class="nav-text">Gestion de cuentas</span>
                 </a>
               
             </nav>
 
+            @php
+                $usuarioSesion = auth()->user();
+                $iniciales = $usuarioSesion
+                    ? strtoupper(substr($usuarioSesion->nombre, 0, 1) . substr($usuarioSesion->apellido, 0, 1))
+                    : 'US';
+            @endphp
+
             <div class="sidebar-footer">
-                <div class="staff-card">
-                    <div class="staff-dot">UR</div>
+                <a class="staff-card staff-card-link" href="{{ route('perfil.edit') }}">
+                    <div class="staff-dot">{{ $iniciales }}</div>
                     <div class="staff-copy">
-                        <strong>Usuario Rintintin</strong>
-                        <span>Sesión administrativa</span>
+                        <strong>Hola, {{ $usuarioSesion->nombre ?? 'Usuario' }}</strong>
+                        <span>{{ $usuarioSesion->rol->nom_rol ?? 'Sesion administrativa' }}</span>
                     </div>
-                </div>
+                </a>
             </div>
         </aside>
 

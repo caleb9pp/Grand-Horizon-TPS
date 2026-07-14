@@ -15,7 +15,9 @@ Route::get('/iniciarSesion', function () {
 });
 
 Route::get('/portalEmpleados', function () {
-    return view('portalEmpleados');
+    $roles = \App\Models\Rol::orderBy('id_rol')->get();
+
+    return view('portalEmpleados', compact('roles'));
 })->name('login');
 
 Route::post('/portalEmpleados/login', [userController::class, 'login'])->name('portalEmpleados.login');
@@ -23,6 +25,15 @@ Route::post('/portalEmpleados/login', [userController::class, 'login'])->name('p
 Route::get('/PerfilUsuario', function () {
     return view('PerfilUsuario');
 })->middleware('auth');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/mi-perfil', [userController::class, 'editPerfil'])->name('perfil.edit');
+    Route::put('/mi-perfil', [userController::class, 'updatePerfil'])->name('perfil.update');
+
+    Route::get('/cuentas', [userController::class, 'listarCuentas'])->name('cuentas.index');
+    Route::get('/cuentas/create', [userController::class, 'createCuenta'])->name('cuentas.create');
+    Route::post('/cuentas', [userController::class, 'storeCuenta'])->name('cuentas.store');
+});
 
 Route::get('/prueba', function () {
     return view('prueba');
