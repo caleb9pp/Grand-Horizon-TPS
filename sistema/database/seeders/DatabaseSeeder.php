@@ -17,11 +17,16 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'nombre' => 'Test',
-            'apellido' => 'User',
-            'nom_usuario' => 'test',
-            'celular' => '0000000000',
-        ]);
+        // Solo crear el usuario de prueba si no existe
+        if (!User::where('nom_usuario', 'test')->exists()) {
+            User::factory()->create([
+                'nombre' => 'Test',
+                'apellido' => 'User',
+                'nom_usuario' => 'test',
+                'celular' => '0000000000',
+            ]);
+        }
+
+        $this->call(EstadoHabiSeeder::class);
     }
 }

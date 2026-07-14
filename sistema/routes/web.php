@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DestinoController;
 use App\Http\Controllers\HotelController;
+use App\Http\Controllers\HabitacionesController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\userController;
 
@@ -58,6 +59,16 @@ Route::get('/hoteles/{hotel}/edit', [HotelController::class, 'editHotel'])->name
 Route::put('/hoteles/{hotel}', [HotelController::class, 'updateHotel'])->name('hoteles.update');
 Route::patch('/hoteles/{hotel}', [HotelController::class, 'updateHotel'])->name('hoteles.update');
 Route::delete('/hoteles/{hotel}', [HotelController::class, 'destroyHotel'])->name('hoteles.destroy');
+
+Route::get('/habitaciones', [HabitacionesController::class, 'listarHabitaciones'])->name('habitaciones.index');
+Route::get('/habitaciones/search', [HabitacionesController::class, 'searchHabitaciones'])->name('habitaciones.search');
+Route::get('/habitaciones/create', [HabitacionesController::class, 'createHabitacion'])->name('habitaciones.create');
+Route::post('/habitaciones', [HabitacionesController::class, 'storeHabitacion'])->name('habitaciones.store');
+Route::get('/habitaciones/{habitacion}', [HabitacionesController::class, 'showHabitacion'])->name('habitaciones.show');
+Route::get('/habitaciones/{habitacion}/edit', [HabitacionesController::class, 'editHabitacion'])->name('habitaciones.edit');
+Route::put('/habitaciones/{habitacion}', [HabitacionesController::class, 'updateHabitacion'])->name('habitaciones.update');
+Route::patch('/habitaciones/{habitacion}', [HabitacionesController::class, 'updateHabitacion'])->name('habitaciones.update');
+Route::delete('/habitaciones/{habitacion}', [HabitacionesController::class, 'destroyHabitacion'])->name('habitaciones.destroy');
 
 Route::get('/servicios', [ServicioController::class, 'listarServicios'])->name('servicios.index');
 Route::get('/servicios/search', [ServicioController::class, 'searchServicios'])->name('servicios.search');
